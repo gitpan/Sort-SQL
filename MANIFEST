@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Sort-SQL.t
+lib/Sort/SQL.pm
+META.yml                                 Module meta-data (added by MakeMaker)

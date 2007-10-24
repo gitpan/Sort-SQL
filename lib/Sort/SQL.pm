@@ -3,7 +3,9 @@ package Sort::SQL;
 use strict;
 use warnings;
 
-our $VERSION = '0.02';
+use vars qw( $VERSION );
+
+$VERSION = '0.03';
 
 sub string2array
 {

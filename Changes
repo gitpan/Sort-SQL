@@ -4,3 +4,10 @@ Revision history for Perl extension Sort::SQL.
 	- original version; created by h2xs 1.23 with options
 		-XA -n Sort::SQL
 
+0.02  Fri Mar 30 2007
+        - removed spurious Perl 5.8.7 requirement
+
+0.03  23 Oct 2007
+        - Perl 5.005? really?? ok. we can play that game.
+
+

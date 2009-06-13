@@ -2,41 +2,30 @@ package Sort::SQL;
 
 use strict;
 use warnings;
+use vars qw($VERSION);    # for version 5.005...
 
-use vars qw( $VERSION );
+$VERSION = '0.04';
 
-$VERSION = '0.03';
-
-sub string2array
-{
+sub string2array {
     my $class = shift;
     my $order = shift || '';    # will return empty array
 
-    my @s = split(m/\ +/, $order);
-    my @p;
-    my %o;
+    my @s = split( m/\ +\,?/, $order );
+    my @pairs;
 
-    while (my ($prop, $dir) = splice(@s, 0, 2))
-    {
-        if (!defined $dir)
-        {
+    while ( my ( $prop, $dir ) = splice( @s, 0, 2 ) ) {
+        if ( !defined $dir ) {
             $dir = 'ASC';
         }
-        elsif ($dir !~ m/^(ASC|DESC)$/i)
-        {
-            unshift(@s, $dir);
+        elsif ( $dir !~ m/^(ASC|DESC)$/i ) {
+            unshift( @s, $dir );
             $dir = 'ASC';
         }
 
-        $o{$prop} = $dir;
-        push(@p, $prop);
+        push @pairs, { $prop => uc($dir) };
     }
 
-    return [
-        map {
-            { $_ => $o{$_} }
-          } @p
-    ];
+    return \@pairs;
 }
 
 1;
@@ -56,8 +45,9 @@ Sort::SQL - manipulate SQL sort strings
 
 =head1 DESCRIPTION
 
-Sort::SQL is so simple it almost doesn't deserve to be on CPAN. But since I kept
-finding myself copy/pasting this method into multiple places, I finally figured
+Sort::SQL is so simple it almost doesn't deserve to be on CPAN. 
+But since I kept finding myself copy/pasting this method 
+into multiple places, I finally figured
 it deserved to live in its own class.
 
 =head1 METHODS
@@ -70,7 +60,8 @@ Takes a scalar string of the SQL C<ORDER BY> syntax and turns it into
 an array of key/value pair hashrefs.
 
 I use this method frequently in my Template Toolkit applications, where I want
-to be able to create re-sortable table columns. I presume there are many other uses.
+to be able to create re-sortable table columns. 
+I presume there are many other uses.
 
 =head1 EXAMPLE
 

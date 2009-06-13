@@ -3,5 +3,6 @@ Makefile.PL
 MANIFEST
 README
 t/Sort-SQL.t
+t/01-sort-sql.t
 lib/Sort/SQL.pm
 META.yml                                 Module meta-data (added by MakeMaker)

@@ -10,4 +10,7 @@ Revision history for Perl extension Sort::SQL.
 0.03  23 Oct 2007
         - Perl 5.005? really?? ok. we can play that game.
 
+0.04  13 June 2009
+        - support comma-separated pairs
+        - refactor to fix bug with two columns with same name.
 

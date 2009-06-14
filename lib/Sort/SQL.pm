@@ -2,15 +2,15 @@ package Sort::SQL;
 
 use strict;
 use warnings;
-use vars qw($VERSION);    # for version 5.005...
+use vars qw( $VERSION );    # for version 5.005...
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 sub string2array {
     my $class = shift;
     my $order = shift || '';    # will return empty array
 
-    my @s = split( m/\ +\,?/, $order );
+    my @s = split( m/[\ ,]+/, $order );
     my @pairs;
 
     while ( my ( $prop, $dir ) = splice( @s, 0, 2 ) ) {

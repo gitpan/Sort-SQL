@@ -14,3 +14,5 @@ Revision history for Perl extension Sort::SQL.
         - support comma-separated pairs
         - refactor to fix bug with two columns with same name.
 
+0.05  13 June 2009
+        - fix regexp for pair separation introduced in 0.04

@@ -4,9 +4,9 @@ use strict;
 use warnings;
 use vars qw( $VERSION );    # for version 5.005...
 
-$VERSION = '0.05';
+$VERSION = '0.06';
 
-sub string2array {
+sub parse {
     my $class = shift;
     my $order = shift || '';    # will return empty array
 
@@ -22,10 +22,19 @@ sub string2array {
             $dir = 'ASC';
         }
 
-        push @pairs, { $prop => uc($dir) };
+        push @pairs, [ $prop => uc($dir) ];
     }
 
     return \@pairs;
+}
+
+sub string2array {
+    my $pairs = shift->parse(@_);
+    return [
+        map {
+            { $_->[0] => $_->[1] }
+            } @$pairs
+    ];
 }
 
 1;
@@ -38,11 +47,13 @@ Sort::SQL - manipulate SQL sort strings
 =head1 SYNOPSIS
 
   use Sort::SQL;
-  
-  my $array = Sort::SQL->string2array('foo ASC bar DESC bing');
-  # $array == [ { foo => 'ASC' }, { bar => 'DESC' }, { bing  => 'ASC' } ]
-  
 
+  my $array_of_arrays = Sort::SQL->parse('foo ASC bar DESC bing');
+  # $array_of_arrays == [ [ 'foo', 'ASC' ], [ 'bar', 'DESC' ], [ 'bing', 'ASC' ] ]
+  
+  my $array_of_hashes = Sort::SQL->string2array('foo asc bar DESC bing');
+  # $array_of_hashes == [ { foo => 'ASC' }, { bar => 'DESC' }, { bing  => 'ASC' } ]
+  
 =head1 DESCRIPTION
 
 Sort::SQL is so simple it almost doesn't deserve to be on CPAN. 
@@ -52,16 +63,19 @@ it deserved to live in its own class.
 
 =head1 METHODS
 
-Sort::SQL implements one method: string2array().
+Sort::SQL implements these methods, each of which
+take a scalar string of the SQL C<ORDER BY> syntax and return
+a data structure.
+
+=head2 parse( I<sql sort string> )
+
+Returns I<sql sort string> as an arrayref of arrayrefs.
 
 =head2 string2array( I<sql sort string> )
 
-Takes a scalar string of the SQL C<ORDER BY> syntax and turns it into
-an array of key/value pair hashrefs.
-
-I use this method frequently in my Template Toolkit applications, where I want
-to be able to create re-sortable table columns. 
-I presume there are many other uses.
+Returns I<sql sort string> as an arrayref of hashrefs. This is for
+backwards compat only -- parse() is a little faster and more
+usable.
 
 =head1 EXAMPLE
 
@@ -73,7 +87,7 @@ as a param in the URI.
 In my controller code I do:
 
  my $sort_order = $c->request->param('order');
- $c->stash->{search}->{order} = Sort::SQL->string2array( $sort_order );
+ $c->stash->{search}->{order} = Sort::SQL->parse( $sort_order );
  
 And then in my template:
 
@@ -81,8 +95,8 @@ And then in my template:
  
  FOREACH pair IN search.order;
 
-  column     = pair.each.0;
-  direction  = pair.each.1;
+  column     = pair.0;
+  direction  = pair.1;
 
   # toggle the sort direction for current sorted column
   # so the next browser request will reverse the sort

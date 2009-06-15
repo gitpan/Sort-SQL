@@ -16,3 +16,7 @@ Revision history for Perl extension Sort::SQL.
 
 0.05  13 June 2009
         - fix regexp for pair separation introduced in 0.04
+
+0.06  14 June 2009
+        - refactor for parse() method
+

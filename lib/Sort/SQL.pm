@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use vars qw( $VERSION );    # for version 5.005...
 
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 sub parse {
     my $class = shift;
@@ -14,6 +14,9 @@ sub parse {
     my @pairs;
 
     while ( my ( $prop, $dir ) = splice( @s, 0, 2 ) ) {
+
+        next if $prop =~ m/\W/;    # avoid sql injection
+
         if ( !defined $dir ) {
             $dir = 'ASC';
         }

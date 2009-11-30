@@ -24,3 +24,7 @@ Revision history for Perl extension Sort::SQL.
         - avoid possible SQL injection by skipping any column names
           that match \W
 
+0.08  29 Nov 2009
+        - fix regex in SQL-injection filter from 0.07 to allow table
+          prefixes on column names.
+

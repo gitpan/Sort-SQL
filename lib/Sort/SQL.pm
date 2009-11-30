@@ -4,7 +4,9 @@ use strict;
 use warnings;
 use vars qw( $VERSION );    # for version 5.005...
 
-$VERSION = '0.07';
+$VERSION = '0.08';
+
+my $debug = $ENV{PERL_DEBUG} || 0;
 
 sub parse {
     my $class = shift;
@@ -15,7 +17,9 @@ sub parse {
 
     while ( my ( $prop, $dir ) = splice( @s, 0, 2 ) ) {
 
-        next if $prop =~ m/\W/;    # avoid sql injection
+        $debug and warn sprintf( "prop='%s'  dir='%s'\n", $prop, $dir || '' );
+
+        next if $prop =~ m/[^\.\w]/;    # avoid sql injection
 
         if ( !defined $dir ) {
             $dir = 'ASC';
